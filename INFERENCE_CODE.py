@@ -4,17 +4,12 @@
 *
 *
 *
-*
-*
-*
-*
-*
-Comments to describe
-*
-*
-*
-*
-*
+Inference code to test a TFLite Classification Model.
+
+AUTHORS: Sencer YÜCEL & Behiç KILINÇKAYA
+
+https://www.linkedin.com/in/yucelsencer/
+https://www.linkedin.com/in/behic-kilinckaya/
 *
 *
 *
@@ -36,9 +31,12 @@ import uos
 PATH_TO_JSON = "PATH_TO_ANNOTATION_JSON_FILE"
 PATH_TO_DATASET = "PATH_TO_YOUR_DATASET"
 PATH_TO_CROPPED_PHOTOS_TO_SAVE = "PATH_TO_CROPPED_PHOTOS_TO_SAVE"
+PATH_TO_TFLITE_MODEL = "PATH_TO_MODEL.tflite"
+PATH_TO_SAVE_INFERENCE_RESULTS = "INFERENCE_RESULTS.txt"
 CROP_COUNT = 16
 
 
+# Tests the negatives.
 def test_negative(detected_coords, json_file_name):
     true_negatives = 0
     false_negatives = 0
@@ -179,6 +177,7 @@ def test_negative(detected_coords, json_file_name):
     return [true_negatives, false_negatives]
 
 
+# Tests the positives.
 def test_positive(detected_coords, json_file_name):
     true_positives = 0
     false_positives = 0
@@ -321,7 +320,7 @@ def test_positive(detected_coords, json_file_name):
     return [true_positives, false_positives]
 
 
-# Helper function to decide cropping size in width and height.
+# Helper functions to decide cropping size in width and height.
 # Return factors of CROP_COUNT (number of frames that we want to crop the whole frame)
 def get_factor_list(n):
     factors = [1]
@@ -352,7 +351,7 @@ def main():
 
     # Loading the model
     try:
-        net = tf.load("PATH_TO_YOUR_MODEL", load_to_fb=True)
+        net = tf.load(PATH_TO_TFLITE_MODEL, load_to_fb=True)
     except Exception as e:
         print(e)
         raise Exception("Failed to load model")
@@ -394,10 +393,12 @@ def main():
         pyb.LED(2).off()
 
 
-        # MODEL
+        # Running the model on cropped photos and compare them with the grand truth if they exceed the limit confidence.
         for l in os.listdir(PATH_TO_CROPPED_PHOTOS_TO_SAVE):
             pyb.LED(3).off()
             pyb.LED(3).on()
+
+            min_conf_to_accept = 0.65  # Confidences with 0.65 and higher are compared with the grand truth.
 
             try:
                 img_name = image.Image(f"{PATH_TO_CROPPED_PHOTOS_TO_SAVE}/{l}", copy_to_fb=True).to_rgb565()
@@ -412,7 +413,7 @@ def main():
                 y2 = l.split("_")[3].split(".")[0]
                 coords = [x1, y1, x2, y2]
                 json_file_name = i.split(".")[0] + ".json"
-                if obj.output()[1] > 0.65:
+                if obj.output()[1] > min_conf_to_accept:
                     total_positives += 1
                     true_positives += test_positive(coords, json_file_name)[0]
                     false_positives += test_positive(coords, json_file_name)[1]
@@ -438,8 +439,9 @@ def main():
     accuracy = (true_positives + true_negatives) / (false_positives + false_negatives)
     F1_SCORE = 2 * (precision * recall) / (precision + recall)
 
-    print("ACCURACY: {}\nF1 SCORE: {}\n".format(accuracy, F1_SCORE))
-
+    with open(PATH_TO_SAVE_INFERENCE_RESULTS, 'a') as f:
+        f.write(f"Precision: {precision}\nRecall: {recall}\nAccuracy: {accuracy}\nF1 Score: {F1_SCORE}\n\n")
+    
 
 if __name__ == "__main__":
     main()
