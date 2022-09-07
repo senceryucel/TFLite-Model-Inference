@@ -393,12 +393,12 @@ def main():
         pyb.LED(2).off()
 
 
-        # Running the model on cropped photos and compare them with the grand truth if they exceed the limit confidence.
+        # Running the model on cropped photos and compare them with the ground truth if they exceed the limit confidence.
         for l in os.listdir(PATH_TO_CROPPED_PHOTOS_TO_SAVE):
             pyb.LED(3).off()
             pyb.LED(3).on()
 
-            min_conf_to_accept = 0.65  # Confidences with 0.65 and higher are compared with the grand truth.
+            min_conf_to_accept = 0.65  # Confidences with 0.65 and higher are compared with the ground truth.
 
             try:
                 img_name = image.Image(f"{PATH_TO_CROPPED_PHOTOS_TO_SAVE}/{l}", copy_to_fb=True).to_rgb565()

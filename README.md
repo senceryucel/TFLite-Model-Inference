@@ -10,7 +10,7 @@
 <br>
 
 ## Algorithm
-#### It takes the .jpg image and crop it into desired number of equal parts (name of the variable to set crop number is CROP_COUNT). Then, for every mini-frame (cropped photo), TFLite Model runs and the result of classification is compared with the grand truth (.json annotation). The performance of the model is calculating based on this comparison.
+#### It takes the .jpg image and crop it into desired number of equal parts (name of the variable to set crop number is CROP_COUNT). Then, for every mini-frame (cropped photo), TFLite Model runs and the result of classification is compared with the ground truth (.json annotation). The performance of the model is calculating based on this comparison.
 
 <br>
 
