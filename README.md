@@ -16,7 +16,7 @@
 
 ## Pre-Requirities
 
-#### - H7 Plus or or higher version of an OpenMV board.
+#### - H7 Plus or higher version of an OpenMV board.
 #### - OpenMV IDE.
 #### - A model to test.
 #### - A testing dataset in .jpg and their annotations in .json; example format of the .json file is in the repository [Recommended: 100+ photos with different scenarios (easy-medium-hard)].
