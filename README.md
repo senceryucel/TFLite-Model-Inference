@@ -25,7 +25,7 @@
 
 ## Usage 
 
-#### 1-) Open INFERENCE_CODE.py on OpenMV IDE, then plug your OpenMV board in to your computer.
+#### 1-) Open INFERENCE_CODE.py on OpenMV IDE, then plug your OpenMV board into your computer.
 
 #### 2-) Construct the first lines of the script with your own paths to your own directories: 
 ```
@@ -42,4 +42,4 @@ What CROP_COUNT is has been described in the Algorithm part.
 
 #### 3-) Connect your OpenMV Board to the IDE with Ctrl+E and execute the script with Ctrl+R.
 
-#### 4-) You have your output in txt format to the directory you set with the information of [accuracy, precision, recall, F1_score] of your TFLite model.
+#### 4-) You have your output in txt format to the directory you set with the information [accuracy, precision, recall, F1_score] of your TFLite model.
